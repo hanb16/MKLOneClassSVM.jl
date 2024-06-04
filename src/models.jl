@@ -446,7 +446,6 @@ end
 #                                Utilities                                 #
 ############################################################################
 function decision_function(model::StandardModel)
-    N = size(model.data, 2)
     data_sv = model.data_sv
     kernels_sk = model.kernels_sk
     α_sv = model.α_sv
@@ -455,7 +454,7 @@ function decision_function(model::StandardModel)
     nsk = length(π_sk)
     ρ = model.ρ
     y(u::AbstractVector{<:Real}) = sum(α_sv[i] * π_sk[m] * kernels_sk[m](u, data_sv[:,i]) for i in 1:nsv, m in 1:nsk) - ρ
-    y(X::AbstractMatrix{<:Real}) = [y(X[:, i]) for i in 1:N]
+    y(X::AbstractMatrix{<:Real}) = [y(x) for x in eachcol(X)]
 
     return y
 end
