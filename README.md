@@ -73,7 +73,7 @@ mklocsvmplot(model; backend=GLMakie)
 
 More information about the trained model can be retrieved by querying corresponding fields of `model`, e.g.,
 ``` julia
-model.SV # the indeces of all suport vectors
+model.SV # the indeces of all support vectors
 model.SK # the indeces of all support kernels
 ```
 
@@ -159,4 +159,4 @@ If you use `MKLOCSVM.jl`, we ask that you please cite this [repository](https://
 ```
 
 ## Acknowledgments
-By default, this package implicitly uses [`KernelFunctions.jl`](https://github.com/JuliaGaussianProcesses/KernelFunctions.jl.git), open source solvers [`HiGHS.jl`](https://github.com/jump-dev/HiGHS.jl.git) and [`Ipopt.jl`](https://github.com/jump-dev/Ipopt.jl.git), and the single kernel SVM solver [`LIBSVM.jl`](https://github.com/JuliaML/LIBSVM.jl.git). Thanks for these useful packages, although the user is also allowed to replace them by other alternatives.
+By default, this package implicitly uses [`KernelFunctions.jl`](https://github.com/JuliaGaussianProcesses/KernelFunctions.jl.git), open source solvers [`HiGHS.jl`](https://github.com/jump-dev/HiGHS.jl.git) and [`Ipopt.jl`](https://github.com/jump-dev/Ipopt.jl.git), and the single kernel SVM solver [`LIBSVM.jl`](https://github.com/JuliaML/LIBSVM.jl.git). Thanks for these useful packages, although the user is also allowed to replace them with other alternatives.
