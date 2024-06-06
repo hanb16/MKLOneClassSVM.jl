@@ -1,4 +1,4 @@
-name = "MKLOCSVM"
+name = "MKLOneClassSVM"
 uuid = "8f660ece-bb0f-4d0c-a9d4-8a8c66018381"
 authors = ["hanb16 <hanb16@tsinghua.org.cn>"]
 version = "0.1.0"

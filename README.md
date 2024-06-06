@@ -1,5 +1,5 @@
-# MKLOCSVM.jl
-`MKLOCSVM.jl` is a Julia package for multiple kernel learning (MKL) based one-class support vector machine (OCSVM). 
+# MKLOneClassSVM.jl
+`MKLOneClassSVM.jl` is a Julia package for multiple kernel learning (MKL) based one-class support vector machine (OneClassSVM). 
 
 
 ## Usage
@@ -7,13 +7,13 @@
 ### Installation
 ``` julia
 using Pkg
-Pkg.add("MKLOCSVM")
+Pkg.add("MKLOneClassSVM")
 Pkg.add("GLMakie") # if the user wants visualization
 ```
 
 ### Using pacakges
 ``` julia
-using MKLOCSVM
+using MKLOneClassSVM
 using GLMakie
 ```
 
@@ -100,7 +100,7 @@ When there are lots of candidate basis kernels, sometimes it may be a beter prac
 ``` julia
 using Distributed
 addprocs(5)
-@everywhere using MKLOCSVM
+@everywhere using MKLOneClassSVM
 using GLMakie
 
 num_batch = 3
@@ -144,7 +144,7 @@ convert_to_polyhedron(model; eliminated=true)
 ```
 
 ## Citing
-If you use `MKLOCSVM.jl`, we ask that you please cite this [repository](https://github.com/hanb16/MKLOCSVM.jl.git) and the following [paper](https://doi.org/10.1016/j.ejor.2020.11.027):
+If you use `MKLOneClassSVM.jl`, we ask that you please cite this [repository](https://github.com/hanb16/MKLOneClassSVM.jl.git) and the following [paper](https://doi.org/10.1016/j.ejor.2020.11.027):
 ``` bibtex
 @article{han2021multiple,
   title={Multiple kernel learning-aided robust optimization: Learning algorithm, computational tractability, and usage in multi-stage decision-making},

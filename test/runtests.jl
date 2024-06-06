@@ -1,4 +1,4 @@
-using MKLOCSVM
+using MKLOneClassSVM
 using MAT: matread
 using GLMakie: GLMakie
 
