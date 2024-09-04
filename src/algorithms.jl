@@ -102,7 +102,7 @@ function mklocsvmtrain(
                 ks,
                 X;
                 ν=ν/num_batch, 
-                μ=μ/num_batch,
+                μ=μ,
                 ϵ=ϵ,
                 algorithm=algorithm,
                 verbose=verbose
@@ -165,7 +165,7 @@ function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ
     π = ones(M) / M
 
     K = sum([KM[m] * π[m] for m in 1:M])
-    J = -1/2 * α' * K * α
+    J = 1/2 * α' * K * α
     
     # ==== Initialize the QP for the Newton step ====
     NewtonStep = Model(hessmkl.step_solver.Optimizer)
@@ -185,7 +185,7 @@ function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ
         elseif false # Add code here if there are other svm_solvers
         end
         # ====================================================
-        J_new = -1/2 * α' * K * α
+        J_new = 1/2 * α' * K * α
         J = J_new
 
         SV = α .> ϵ
@@ -210,7 +210,7 @@ function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ
         # =====================================================
         π = π + step
         K = sum([KM[m] * π[m] for m in 1:M])
-        J_new = -1/2 * α' * K * α
+        J_new = 1/2 * α' * K * α
         if abs(J - J_new) <= ϵ * abs(J)
             break
         end

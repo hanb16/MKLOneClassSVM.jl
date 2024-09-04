@@ -106,7 +106,7 @@ using GLMakie
 num_batch = 3
 Kernels_inbat = group_kernels(Kernels, num_batch; mode="randomly")
 model = pmap(
-    ks -> mklocsvmtrain(ks, X; algorithm=algor, ν=0.01/num_batch, μ=0.5/num_batch), 
+    ks -> mklocsvmtrain(ks, X; algorithm=algor, ν=0.01/num_batch, μ=0.5), 
     Kernels_inbat
 )
 mklocsvmplot(model; backend=GLMakie)
