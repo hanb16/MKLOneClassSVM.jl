@@ -199,7 +199,9 @@ function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ
         
         grad = [-1/2 * α' * KM[m] * α for m in 1:M]
         Hess = [α[SV]' * KM[m][SV, BSV] * _Λ * KM[n][BSV, SV] * α[SV] for m in 1:M, n in 1:M]
-        # Hess = (Hess + Hess') / 2 + ϵ * mean(diag(Hess)) * I(M)
+        while ~isposdef(Hess)
+            Hess = (Hess + Hess') / 2 + ϵ * mean(diag(Hess)) * I(M)
+        end
 
         # ==== Update and solve the QP for the Newton step ====
         delete(NewtonStep, con); unregister(NewtonStep, :con)
@@ -211,7 +213,7 @@ function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ
         π = π + step
         K = sum([KM[m] * π[m] for m in 1:M])
         J_new = 1/2 * α' * K * α
-        if abs(J - J_new) <= ϵ * abs(J)
+        if J - J_new <= ϵ * J
             break
         end
         J = J_new

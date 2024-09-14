@@ -4,7 +4,7 @@ module MKLOneClassSVM
 using Reexport
 using Statistics: mean, quantile, std
 using LIBSVM: Kernel as LIBSVM_Kernel, LIBSVM, OneClassSVM, svmtrain
-using LinearAlgebra: I, diag, norm, nullspace
+using LinearAlgebra: I, diag, isposdef, norm, nullspace
 using JuMP: @constraint, @objective, @variable, MOI, Model, all_variables, delete, dual, name, optimize!, set_optimizer_attributes, set_silent, unregister, value
 using HiGHS
 using Ipopt
