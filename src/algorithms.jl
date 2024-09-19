@@ -185,8 +185,6 @@ function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ
         elseif false # Add code here if there are other svm_solvers
         end
         # ====================================================
-        J_new = 1/2 * α' * K * α
-        J = J_new
 
         SV = α .> ϵ
         BSV = ϵ .< α .< 1/(N*ν) - ϵ

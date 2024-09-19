@@ -128,7 +128,7 @@ end
 
 @kwdef struct HessianMKL <: MKLOCSVM_Algorithm
     svm_solver::Module=LIBSVM
-    step_solver::Module=HiGHS 
+    step_solver::Module=Ipopt 
     ϵ::Float64=1e-6
     verbose::Bool=true
 end
