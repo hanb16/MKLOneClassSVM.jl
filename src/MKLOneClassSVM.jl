@@ -5,7 +5,7 @@ using Reexport
 using Statistics: mean, quantile, std
 using LIBSVM: Kernel as LIBSVM_Kernel, LIBSVM, OneClassSVM, svmtrain
 using LinearAlgebra: I, diag, isposdef, norm, nullspace
-using JuMP: @constraint, @objective, @variable, MOI, Model, all_variables, delete, dual, name, optimize!, set_optimizer_attributes, set_silent, unregister, value
+using JuMP: @constraint, @objective, @variable, MOI, Model, all_variables, delete, dual, is_solved_and_feasible, name, optimize!, set_optimizer_attributes, set_silent, unregister, value
 using HiGHS
 using Ipopt
 @reexport using KernelFunctions

@@ -101,7 +101,7 @@ function mklocsvmtrain(
             mklocsvmtrain(
                 ks,
                 X;
-                ν=ν/num_batch, 
+                ν=ν, 
                 μ=μ,
                 ϵ=ϵ,
                 algorithm=algorithm,
@@ -155,7 +155,7 @@ end
 
 
 
-function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ::Float64=0.05)
+function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ::Float64=0.05, a::Float64=0.25, b::Float64=0.1)
 
     ϵ = hessmkl.ϵ
     N = size(KM[1], 1)
@@ -194,24 +194,39 @@ function (hessmkl::HessianMKL)(KM::Vector{Matrix{Float64}}; ν::Float64=0.01, μ
         end
         Λ = [K[BSV, BSV] ones(sum(BSV)); ones(sum(BSV))' 0]
         _Λ = inv(Λ)[1:end-1, 1:end-1]
-        
+
         grad = [-1/2 * α' * KM[m] * α for m in 1:M]
         Hess = [α[SV]' * KM[m][SV, BSV] * _Λ * KM[n][BSV, SV] * α[SV] for m in 1:M, n in 1:M]
-        while ~isposdef(Hess)
-            Hess = (Hess + Hess') / 2 + ϵ * mean(diag(Hess)) * I(M)
-        end
 
         # ==== Update and solve the QP for the Newton step ====
         delete(NewtonStep, con); unregister(NewtonStep, :con)
         @constraint(NewtonStep, con, 0 .<= π + s .<= 1/(M*μ))
         @objective(NewtonStep, Min, 1/2 * s' * Hess * s + grad' * s)
         optimize!(NewtonStep)
+        if ~is_solved_and_feasible(NewtonStep)
+            error("The NewtonStep QP is not solved or it's infeasible!")
+        end
         step = value.(s)
         # =====================================================
-        π = π + step
+
+        # ==== Backtracking Line Search ====
+        t = 1.
+        π_temp = π + t * step
+        K_temp = sum([KM[m] * π_temp[m] for m in 1:M])
+        J_temp = 1/2 * α' * K_temp * α
+        while (J - J_temp <= 0 && abs(J - J_temp) > ϵ * J) || t <= ϵ
+            J - J_temp
+            t = b * t
+            π_temp = π + t * step
+            K_temp = sum([KM[m] * π_temp[m] for m in 1:M])
+            J_temp = 1/2 * α' * K_temp * α
+        end
+        # ==================================
+
+        π = π + t * step
         K = sum([KM[m] * π[m] for m in 1:M])
         J_new = 1/2 * α' * K * α
-        if J - J_new <= ϵ * J
+        if abs(J - J_new) <= ϵ * J
             break
         end
         J = J_new
